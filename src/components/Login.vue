@@ -1,32 +1,49 @@
 <template>
-    <div class="login-container">
-        <div class="login-box">
-            <!-- 头像 -->
-            <div class="avatar-box">
-                <img src="../assets/logo.png" alt="">
-            </div>
-            <el-form ref="loginFormRef" label-width="0" class="login-form" :model="loginForm" :rules="loginRules">
-                <!-- 用户名 -->
-                <el-form-item prop="username">
-                    <el-input prefix-icon="el-icon-user" v-model="loginForm.username"></el-input>
-                </el-form-item>
-                <!-- 密码 -->
-                <el-form-item prop="password">
-                    <el-input prefix-icon="el-icon-lock" v-model="loginForm.password" show-password></el-input>
-                </el-form-item>
-                <!-- 按钮 -->
-                <el-form-item class="login-btn">
-                    <el-button type="primary" @click="login('loginFormRef')">登录</el-button>
-                    <el-button type="info" @click="restLoginForm('loginFormRef')">重置</el-button>
-                </el-form-item>
-            </el-form>
-        </div>
+  <div class="login-container">
+    <div class="login-box">
+      <!-- 头像 -->
+      <div class="avatar-box">
+        <img src="../assets/logo.png" alt="" />
+      </div>
+      <el-form
+        ref="loginFormRef"
+        label-width="0"
+        class="login-form"
+        :model="loginForm"
+        :rules="loginRules"
+      >
+        <!-- 用户名 -->
+        <el-form-item prop="username">
+          <el-input
+            prefix-icon="el-icon-user"
+            v-model="loginForm.username"
+          ></el-input>
+        </el-form-item>
+        <!-- 密码 -->
+        <el-form-item prop="password">
+          <el-input
+            prefix-icon="el-icon-lock"
+            v-model="loginForm.password"
+            show-password
+          ></el-input>
+        </el-form-item>
+        <!-- 按钮 -->
+        <el-form-item class="login-btn">
+          <el-button type="primary" @click="login('loginFormRef')"
+            >登录</el-button
+          >
+          <el-button type="info" @click="restLoginForm('loginFormRef')"
+            >重置</el-button
+          >
+        </el-form-item>
+      </el-form>
     </div>
+  </div>
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       // 登录数据绑定对象
       loginForm: {
@@ -50,16 +67,17 @@ export default {
   },
   methods: {
     // 点击重置按钮、重置表单
-    restLoginForm (formName) {
+    restLoginForm(formName) {
       console.log(this)
       this.$refs[formName].resetFields()
     },
-    login (formName) {
-      this.$refs[formName].validate(async (valid) => {
+    login(formName) {
+      this.$refs[formName].validate(async valid => {
         console.log(valid)
         if (!valid) return
         const { data: ret } = await this.$http.post('login', this.loginForm)
-        if (ret.meta.status !== 200) return this.$message.error('登录失败，请检查用户名和密码')
+        if (ret.meta.status !== 200)
+          return this.$message.error('登录失败，请检查用户名和密码')
         this.$message.success('登录成功')
         // 1、将登录成功之后的 token，保存到客户端的sessionStorage中
         // 1.1项目中出了登录之外的其他API接口，必须在登录之后才能访问
@@ -76,48 +94,48 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.login-container{
-    background-color: #2b4b6b;
-    height: 100%;
+.login-container {
+  background-color: #2b4b6b;
+  height: 100%;
 }
 
-.login-box{
-    width: 450px;
-    height: 300px;
-    background-color: #ffffff;
-    border-radius: 5px;
+.login-box {
+  width: 450px;
+  height: 300px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  .avatar-box {
+    width: 130px;
+    height: 130px;
+    border: 2px solid #eeeeee;
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 0 5px;
     position: absolute;
     left: 50%;
-    top: 50%;
     transform: translate(-50%, -50%);
-    .avatar-box{
-      width: 130px;
-      height: 130px;
-      border: 2px solid #eeeeee;
+    background-color: #ffffff;
+    img {
       border-radius: 50%;
-      padding: 10px;
-      box-shadow: 0 0 5px;
-      position: absolute;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #ffffff;
-      img {
-          border-radius: 50%;
-          width: 100%;
-          height: 100%;
-          background-color: #dddddd;
-      }
+      width: 100%;
+      height: 100%;
+      background-color: #dddddd;
     }
-    .login-btn {
-        display: flex;
-        justify-content: flex-end;
-    }
-    .login-form {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        padding: 0 20px;
-        box-sizing: border-box;
-    }
+  }
+  .login-btn {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .login-form {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
 }
 </style>
